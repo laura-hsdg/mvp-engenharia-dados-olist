@@ -10,7 +10,7 @@ Pipeline de dados em nuvem (Databricks Free Edition), com arquitetura medalhão 
 
 ## Resumo executivo
 
-**Pergunta:** a empresa tem estoque para vender R$ 2 milhões em novembro (Black Friday)?
+**Pergunta:** terei estoque para vender R$ 2 milhões em novembro (Black Friday)?
 
 **Resposta curta:** o efeito natural da Black Friday sobre a base de 2018 projeta **R$ 1,50M (75% da meta)**. Atingir R$ 2M exigiria o **dobro das unidades** vendidas em nov/2017 nos produtos da curva A. A recomendação é estocar para o cenário projetado (~1,5x nov/2017) e condicionar a compra adicional a ações comerciais (conforme capacidade operacional da empresa) que justifiquem o gap, evitando capital parado em estoque e que fechem o gap de R$ 504 mil.
 
@@ -29,7 +29,7 @@ Pipeline de dados em nuvem (Databricks Free Edition), com arquitetura medalhão 
 
 ---
 
-## 1. Contexto de negócios e perguntas
+## 1. Contexto de Negócios e Perguntas (Etapa 2 e 4.1)
 
 ### Contexto
 
@@ -59,7 +59,7 @@ Como a base utilizada não possui dados de estoque, o pipeline calcula a **neces
 
 ---
 
-## 2. Carga dos dados (coleta)
+## 2. Carga dos Dados (Etapa 4.2)
 
 ### Fonte
 
@@ -81,7 +81,7 @@ Como a base utilizada não possui dados de estoque, o pipeline calcula a **neces
 
 ---
 
-## 3. Modelagem e catálogo de dados
+## 3. Modelagem e Catálogo de Dados (Etapa 4.3)
 
 ### Modelo dimensional: esquema estrela
 
@@ -180,7 +180,7 @@ O catálogo foi implementado **no próprio Unity Catalog**, com `COMMENT` em tod
 
 ---
 
-## 4. Pipeline de dados (ETL)
+## 4. Pipeline de Dados (Etapa 4.4)
 
 ```mermaid
 flowchart LR
@@ -235,7 +235,7 @@ Primeira validação do modelo: a receita mensal mostra o pico em novembro/2017 
 
 ---
 
-## 5. Qualidade de dados
+## 5. Qualidade de Dados (Etapa 4.5)
 
 O diagnóstico (`02_qualidade`) foi feito **na Bronze, antes de qualquer transformação**, nas tabelas usadas pelo objetivo. Seguiu os critérios de qualidade vistos em Gestão e Governança de Dados: completude, unicidade, consistência, acurácia, integridade referencial e outliers.
 
@@ -261,7 +261,7 @@ O diagnóstico (`02_qualidade`) foi feito **na Bronze, antes de qualquer transfo
 
 ---
 
-## 6. Análise de dados
+## 6. Análise de Dados (Etapa 4.5)
 
 As consultas completas estão em `notebooks/05_analise.ipynb`.
 
@@ -340,11 +340,11 @@ Categorias concentradas em poucos produtos merecem atenção: ferramentas_jardim
 
 ### Objetivos atingidos
 
-O pipeline completo foi construído na nuvem: ingestão bruta, diagnóstico e tratamento de qualidade, modelo dimensional com catálogo e linhagem, e análise. Cinco das seis perguntas foram respondidas. Além de responder, a análise questionou a própria meta: mostrou que R$ 2M exige 25% além do efeito natural da Black Friday, o que muda a decisão de compra de estoque. O valor de 2M é uma meta que depende da capacidade operacional da empresa em outros âmbitos além do estoque (caixa para compra dos materiais, divulgação do time de marketing e vendas, disponibilidade de espaço para guardar o estoque e embalagen, etc)
+O pipeline completo foi construído na nuvem: ingestão bruta, diagnóstico e tratamento de qualidade, modelo dimensional com catálogo e linhagem, e análise. Cinco das seis perguntas foram respondidas. Além de responder, a análise questionou a própria meta: mostrou que R$ 2M exige 25% além do efeito natural da Black Friday, o que muda a decisão de compra de estoque. O valor de 2M é uma meta que depende da capacidade operacional da empresa em outros âmbitos além do estoque (caixa para compra dos materiais, divulgação do time de marketing e vendas, disponibilidade de espaço para guardar o estoque e embalagens, etc)
 
 ### Dificuldades
 
-- **Ausência de estoque na base:** a pergunta central ("terei estoque?") não pôde ser respondida integralmente pois a base não traz o estoque inicial. A solução foi reformular o problema para **necessidade de estoque**, que a base permite calcular, e manter a P6 declarada como não respondida.
+- **Ausência de estoque na base:** a pergunta central ("terei estoque?") não pôde ser respondida integralmente. A solução foi reformular o problema para **necessidade de estoque**, que a base permite calcular, e manter a P6 declarada como não respondida.
 - **Ausência de custo do produto:** impediu análises de margem, que seriam naturais para a decisão de estoque.
 - **Ausência de marcação de campanhas:** as janelas da Black Friday e do Dia das Mães foram definidas por calendário na `dim_tempo`, não por um registro oficial de promoções.
 - **Cauda longa de produtos:** cerca de 32 mil produtos, a maioria vendida poucas vezes, tornam a previsão por produto instável. Por isso a necessidade de estoque foi apresentada por categoria.
@@ -353,7 +353,7 @@ O pipeline completo foi construído na nuvem: ingestão bruta, diagnóstico e tr
 
 - Aplicar o mesmo pipeline a **dados reais de uma operação com estoque**, para responder a P6, comparando necessidade × disponível e gerando uma lista de compras.
 - Incluir custo do produto para analisar margem de contribuição por pedido na Black Friday.
-- Substituir o fator sazonal simples por um modelo de previsão de demanda, por exemplo com séries/campanhas temporais.
+- Substituir o fator sazonal simples por um modelo de previsão de demanda, por exemplo com séries temporais.
 - Orquestrar o pipeline com Databricks Workflows para atualização periódica.
 - Implementar **SCD tipo 2** na `dim_produto`, para versionar mudanças de categoria ao longo do tempo.
 
