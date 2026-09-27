@@ -1,7 +1,8 @@
 # MVP – Engenharia de Dados: Necessidade de Estoque para a Black Friday
 
 **Pós-graduação em Ciência de Dados e Analytics – PUC-Rio | Sprint 3: Engenharia de Dados**
-**Aluna:** Laura Gouvaa
+**Aluna:** Laura Gouvea
+**Matrícula**: 4052026000223
 
 Pipeline de dados em nuvem (Databricks Free Edition), com arquitetura medalhão (Bronze > Silver > Gold), modelo dimensional em esquema estrela, catálogo de dados no Unity Catalog, análise de qualidade e respostas às perguntas de negócio.
 
